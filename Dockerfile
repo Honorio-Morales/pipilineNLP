@@ -1,14 +1,8 @@
 FROM python:3.11-slim
-
 WORKDIR /app
-
 COPY requirements.txt .
-
 RUN pip install --no-cache-dir -r requirements.txt && \
     python -m spacy download es_core_news_sm
-
 COPY . .
-
 EXPOSE 8000
-
-CMD uvicorn api:app --host 0.0.0.0 --port $PORT
+CMD ["sh", "-c", "uvicorn api:app --host 0.0.0.0 --port ${PORT:-8000}"]
