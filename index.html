@@ -290,7 +290,7 @@ const TEXTAREA = document.getElementById("text-input");
 const BTN = document.getElementById("analyze-btn");
 const ERROR = document.getElementById("error");
 const RESULTS = document.getElementById("results");
-const API = "http://localhost:8000/analyze";
+const API = "https://[tu-url-railway].up.railway.app/analyze";
 
 BTN.addEventListener("click", analyze);
 
@@ -314,7 +314,7 @@ async function analyze() {
     render(data);
   } catch (err) {
     if (err.message.includes("Failed to fetch") || err.message.includes("NetworkError")) {
-      ERROR.textContent = "No se pudo conectar con el servidor. Asegurese de que la API este corriendo en http://localhost:8000";
+      ERROR.textContent = "No se pudo conectar con el servidor. Asegurese de que la API este corriendo en https://[tu-url-railway].up.railway.app";
     } else {
       ERROR.textContent = err.message;
     }
