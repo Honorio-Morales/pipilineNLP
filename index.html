@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline NLP | Analisis de texto en espanol</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "IBM Plex Sans", sans-serif;
+  background: #f7f6f3;
+  color: #1a1a1a;
+  line-height: 1.6;
+  padding: 2rem 1rem;
+}
+
+.container { max-width: 880px; margin: 0 auto; }
+
+header { margin-bottom: 2rem; }
+header h1 {
+  font-weight: 500;
+  font-size: 1.6rem;
+  letter-spacing: -0.02em;
+  color: #2d2d2d;
+}
+header p {
+  font-size: 0.85rem;
+  color: #6b6b6b;
+  margin-top: 0.2rem;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e8e7e4;
+  border-radius: 6px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+textarea {
+  width: 100%;
+  min-height: 130px;
+  padding: 0.85rem 1rem;
+  border: 1px solid #d4d3d0;
+  border-radius: 4px;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  resize: vertical;
+  background: #fcfcfb;
+  color: #1a1a1a;
+  transition: border-color 0.15s;
+}
+textarea:focus { outline: none; border-color: #8b8b8b; }
+
+button {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.55rem 1.5rem;
+  border: 1px solid #c0bfbc;
+  border-radius: 4px;
+  background: #fff;
+  color: #2d2d2d;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  margin-top: 0.75rem;
+}
+button:hover { background: #f0efec; border-color: #a8a7a4; }
+button:active { background: #e6e5e2; }
+button:disabled { opacity: 0.5; cursor: default; }
+
+.summary-bar {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e8e7e4;
+  margin-bottom: 0.25rem;
+}
+.summary-item { font-size: 0.82rem; color: #5a5a5a; }
+.summary-item strong { color: #2d2d2d; font-weight: 500; }
+
+details {
+  border: 1px solid #e8e7e4;
+  border-radius: 6px;
+  background: #fff;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+}
+details[open] { border-color: #d4d3d0; }
+
+summary {
+  font-size: 0.88rem;
+  font-weight: 500;
+  padding: 0.85rem 1.25rem;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #2d2d2d;
+}
+summary::-webkit-details-marker { display: none; }
+summary::before {
+  content: "+";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.1rem;
+  height: 1.1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #8b8b8b;
+  border: 1px solid #d4d3d0;
+  border-radius: 3px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+details[open] > summary::before { content: "\2212"; }
+summary:hover { background: #faf9f7; }
+
+.stage-content { padding: 0 1.25rem 1.25rem; }
+
+.sentence-card {
+  padding: 0.6rem 0.85rem;
+  border-left: 3px solid #c8c7c4;
+  margin-bottom: 0.5rem;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  background: #faf9f7;
+  border-radius: 0 4px 4px 0;
+}
+
+.token-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.chip {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.8rem;
+  background: #f0efec;
+  border: 1px solid #e0dfdc;
+  border-radius: 3px;
+  color: #2d2d2d;
+}
+
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+th {
+  text-align: left;
+  font-weight: 500;
+  color: #6b6b6b;
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid #e8e7e4;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+td {
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid #f0efec;
+  vertical-align: middle;
+}
+tr:last-child td { border-bottom: none; }
+.mono { font-family: "IBM Plex Mono", monospace; font-size: 0.8rem; }
+
+.pos-badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #fff;
+}
+.pos-NOUN  { background: #2563eb; }
+.pos-VERB  { background: #d97706; }
+.pos-ADJ   { background: #16a34a; }
+.pos-ADV   { background: #ea580c; }
+.pos-PROPN { background: #0d9488; }
+.pos-AUX   { background: #dc2626; }
+.pos-DET   { background: #9333ea; }
+.pos-ADP   { background: #64748b; }
+.pos-CCONJ { background: #a16207; }
+.pos-SCONJ { background: #a16207; }
+.pos-PRON  { background: #db2777; }
+.pos-PUNCT { background: #a8a29e; }
+.pos-NUM   { background: #0891b2; }
+.pos-PART  { background: #78716c; }
+.pos-INTJ  { background: #be123c; }
+.pos-SYM   { background: #57534e; }
+.pos-X     { background: #78716c; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.col-header {
+  font-size: 0.78rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6b6b6b;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid #e8e7e4;
+}
+.removed-token {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.8rem;
+  color: #a8a8a8;
+  text-decoration: line-through;
+  margin-right: 0.5rem;
+  line-height: 1.8;
+}
+.kept-token {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.8rem;
+  margin-right: 0.5rem;
+  line-height: 1.8;
+  color: #2d2d2d;
+}
+.token-row { margin-bottom: 0.15rem; }
+
+.error-msg {
+  color: #b91c1c;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.loading { color: #6b6b6b; font-size: 0.85rem; font-style: italic; }
+
+@media (max-width: 600px) {
+  .two-col { grid-template-columns: 1fr; }
+  body { padding: 1rem 0.75rem; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Pipeline de NLP</h1>
+  <p>Analisis linguistico automatizado de texto en espanol</p>
+</header>
+
+<div class="card">
+  <textarea id="text-input" placeholder="Pegue el texto en espanol para analizar...">Netflix ha encontrado en el juego del calamar su nuevo fenomeno mundial ni siquiera en la propia plataforma contaban con ello como seguro que tampoco esperaban recibir multitud de quejas por una escena del cuarto episodio sin embargo han estado rapidos para responder a la indignacion del publico y ha introducido un cambio en el equipo</textarea>
+  <button id="analyze-btn">Analizar</button>
+  <div id="error" class="error-msg"></div>
+</div>
+
+<div id="results" style="display:none;">
+  <div class="card" id="summary-bar"></div>
+
+  <details id="sec-sentences">
+    <summary>1. Segmentacion en Frases</summary>
+    <div class="stage-content" id="content-sentences"></div>
+  </details>
+
+  <details id="sec-tokens">
+    <summary>2. Tokenizacion</summary>
+    <div class="stage-content" id="content-tokens"></div>
+  </details>
+
+  <details id="sec-lemmas">
+    <summary>3. Lematizacion</summary>
+    <div class="stage-content" id="content-lemmas"></div>
+  </details>
+
+  <details id="sec-pos">
+    <summary>4. POS Tagging</summary>
+    <div class="stage-content" id="content-pos"></div>
+  </details>
+
+  <details id="sec-stopwords">
+    <summary>5. Quitar Stopwords</summary>
+    <div class="stage-content" id="content-stopwords"></div>
+  </details>
+</div>
+
+</div>
+
+<script>
+const TEXTAREA = document.getElementById("text-input");
+const BTN = document.getElementById("analyze-btn");
+const ERROR = document.getElementById("error");
+const RESULTS = document.getElementById("results");
+const API = "http://localhost:8000/analyze";
+
+BTN.addEventListener("click", analyze);
+
+async function analyze() {
+  ERROR.textContent = "";
+  RESULTS.style.display = "none";
+  BTN.disabled = true;
+  BTN.textContent = "Analizando...";
+
+  try {
+    const res = await fetch(API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: TEXTAREA.value }),
+    });
+    if (!res.ok) {
+      const body = await res.text();
+      throw new Error(`Error del servidor (${res.status}): ${body}`);
+    }
+    const data = await res.json();
+    render(data);
+  } catch (err) {
+    if (err.message.includes("Failed to fetch") || err.message.includes("NetworkError")) {
+      ERROR.textContent = "No se pudo conectar con el servidor. Asegurese de que la API este corriendo en http://localhost:8000";
+    } else {
+      ERROR.textContent = err.message;
+    }
+  } finally {
+    BTN.disabled = false;
+    BTN.textContent = "Analizar";
+  }
+}
+
+function render(data) {
+  document.getElementById("summary-bar").innerHTML = renderSummary(data.summary);
+  document.getElementById("content-sentences").innerHTML = renderSentences(data.sentences);
+  document.getElementById("content-tokens").innerHTML = renderTokens(data.tokens);
+  document.getElementById("content-lemmas").innerHTML = renderLemmas(data.lemmas);
+  document.getElementById("content-pos").innerHTML = renderPos(data.pos_tags);
+  document.getElementById("content-stopwords").innerHTML = renderStopwords(data.stopwords);
+
+  for (const id of ["sec-sentences","sec-tokens","sec-lemmas","sec-pos","sec-stopwords"]) {
+    document.getElementById(id).open = false;
+  }
+
+  RESULTS.style.display = "block";
+  RESULTS.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function renderSummary(s) {
+  return `<div class="summary-bar">
+    <span class="summary-item">Tokens totales: <strong>${s.total_tokens}</strong></span>
+    <span class="summary-item">Oraciones: <strong>${s.total_sentences}</strong></span>
+    <span class="summary-item">Tokens tras stopwords: <strong>${s.tokens_after_stopword_removal}</strong></span>
+  </div>`;
+}
+
+function renderSentences(sentences) {
+  return sentences.map((s, i) =>
+    `<div class="sentence-card"><strong>${i + 1}.</strong> ${escHtml(s)}</div>`
+  ).join("");
+}
+
+function renderTokens(tokens) {
+  return `<div class="token-chips">${
+    tokens.map(t => `<span class="chip">${escHtml(t)}</span>`).join("")
+  }</div>`;
+}
+
+function renderLemmas(lemmas) {
+  return `<table>
+    <thead><tr><th>Token</th><th>Lema</th></tr></thead>
+    <tbody>${
+      lemmas.map(l =>
+        `<tr><td class="mono">${escHtml(l.token)}</td><td class="mono">${escHtml(l.lemma)}</td></tr>`
+      ).join("")
+    }</tbody></table>`;
+}
+
+function renderPos(tags) {
+  return `<table>
+    <thead><tr><th>Token</th><th>POS</th><th>Descripcion</th></tr></thead>
+    <tbody>${
+      tags.map(t =>
+        `<tr>
+          <td class="mono">${escHtml(t.token)}</td>
+          <td><span class="pos-badge pos-${t.pos}">${t.pos}</span></td>
+          <td style="color:#6b6b6b;font-size:0.82rem;">${escHtml(t.description)}</td>
+        </tr>`
+      ).join("")
+    }</tbody></table>`;
+}
+
+function renderStopwords(sw) {
+  const removed = sw.removed.map(t =>
+    `<div class="token-row"><span class="removed-token">${escHtml(t.token)}</span><span class="pos-badge pos-${t.pos}" style="font-size:0.65rem;">${t.pos}</span></div>`
+  ).join("");
+  const kept = sw.kept.map(t =>
+    `<div class="token-row"><span class="kept-token">${escHtml(t.token)}</span><span class="pos-badge pos-${t.pos}" style="font-size:0.65rem;">${t.pos}</span></div>`
+  ).join("");
+  return `<div class="two-col">
+    <div>
+      <div class="col-header">Eliminados (stopwords + puntuacion)</div>
+      <div>${removed || '<span style="color:#a8a8a8;">Ninguno</span>'}</div>
+    </div>
+    <div>
+      <div class="col-header">Conservados (palabras de contenido)</div>
+      <div>${kept || '<span style="color:#a8a8a8;">Ninguno</span>'}</div>
+    </div>
+  </div>`;
+}
+
+function escHtml(s) {
+  const d = document.createElement("div");
+  d.textContent = s;
+  return d.innerHTML;
+}
+</script>
+</body>
+</html>

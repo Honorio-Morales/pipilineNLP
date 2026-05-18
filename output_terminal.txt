@@ -1,0 +1,235 @@
+========================================================================
+  PIPELINE DE PROCESAMIENTO DE LENGUAJE NATURAL (NLP)
+  Modelo: spaCy es_core_news_sm
+========================================================================
+
+  Texto de entrada:
+  Netflix ha encontrado en el juego del calamar su nuevo fenómeno mundial ni siqui...
+  (336 caracteres)
+
+========================================================================
+  ETAPA 1: Segmentación en Frases (Sentence Segmentation)
+========================================================================
+  Oración  1: Netflix ha encontrado en el juego del calamar su nuevo fenómeno mundial ni siquiera en la propia plataforma contaban con ello como seguro que tampoco esperaban recibir multitud de quejas por una escena del cuarto episodio sin embargo han estado rápidos para responder a la indignación del público y ha introducido un cambio en el equipo
+
+  → Total de oraciones detectadas: 1
+
+========================================================================
+  ETAPA 2: Tokenización (Tokenization)
+========================================================================
+  Token  1: Netflix
+  Token  2: ha
+  Token  3: encontrado
+  Token  4: en
+  Token  5: el
+  Token  6: juego
+  Token  7: del
+  Token  8: calamar
+  Token  9: su
+  Token 10: nuevo
+  Token 11: fenómeno
+  Token 12: mundial
+  Token 13: ni
+  Token 14: siquiera
+  Token 15: en
+  Token 16: la
+  Token 17: propia
+  Token 18: plataforma
+  Token 19: contaban
+  Token 20: con
+  Token 21: ello
+  Token 22: como
+  Token 23: seguro
+  Token 24: que
+  Token 25: tampoco
+  Token 26: esperaban
+  Token 27: recibir
+  Token 28: multitud
+  Token 29: de
+  Token 30: quejas
+  Token 31: por
+  Token 32: una
+  Token 33: escena
+  Token 34: del
+  Token 35: cuarto
+  Token 36: episodio
+  Token 37: sin
+  Token 38: embargo
+  Token 39: han
+  Token 40: estado
+  Token 41: rápidos
+  Token 42: para
+  Token 43: responder
+  Token 44: a
+  Token 45: la
+  Token 46: indignación
+  Token 47: del
+  Token 48: público
+  Token 49: y
+  Token 50: ha
+  Token 51: introducido
+  Token 52: un
+  Token 53: cambio
+  Token 54: en
+  Token 55: el
+  Token 56: equipo
+
+  → Total de tokens: 56
+
+========================================================================
+  ETAPA 3: Lematización (Lemmatization)
+========================================================================
+  Token  1: Netflix                        →  lema: Netflix
+  Token  2: ha                             →  lema: haber
+  Token  3: encontrado                     →  lema: encontrar
+  Token  4: en                             →  lema: en
+  Token  5: el                             →  lema: el
+  Token  6: juego                          →  lema: juego
+  Token  7: del                            →  lema: del
+  Token  8: calamar                        →  lema: calamar
+  Token  9: su                             →  lema: su
+  Token 10: nuevo                          →  lema: nuevo
+  Token 11: fenómeno                       →  lema: fenómeno
+  Token 12: mundial                        →  lema: mundial
+  Token 13: ni                             →  lema: ni
+  Token 14: siquiera                       →  lema: siquiera
+  Token 15: en                             →  lema: en
+  Token 16: la                             →  lema: el
+  Token 17: propia                         →  lema: propio
+  Token 18: plataforma                     →  lema: plataforma
+  Token 19: contaban                       →  lema: contar
+  Token 20: con                            →  lema: con
+  Token 21: ello                           →  lema: él
+  Token 22: como                           →  lema: como
+  Token 23: seguro                         →  lema: seguro
+  Token 24: que                            →  lema: que
+  Token 25: tampoco                        →  lema: tampoco
+  Token 26: esperaban                      →  lema: esperar
+  Token 27: recibir                        →  lema: recibir
+  Token 28: multitud                       →  lema: multitud
+  Token 29: de                             →  lema: de
+  Token 30: quejas                         →  lema: queja
+  Token 31: por                            →  lema: por
+  Token 32: una                            →  lema: uno
+  Token 33: escena                         →  lema: escena
+  Token 34: del                            →  lema: del
+  Token 35: cuarto                         →  lema: cuarto
+  Token 36: episodio                       →  lema: episodio
+  Token 37: sin                            →  lema: sin
+  Token 38: embargo                        →  lema: embargo
+  Token 39: han                            →  lema: haber
+  Token 40: estado                         →  lema: estar
+  Token 41: rápidos                        →  lema: rápido
+  Token 42: para                           →  lema: para
+  Token 43: responder                      →  lema: responder
+  Token 44: a                              →  lema: a
+  Token 45: la                             →  lema: el
+  Token 46: indignación                    →  lema: indignación
+  Token 47: del                            →  lema: del
+  Token 48: público                        →  lema: público
+  Token 49: y                              →  lema: y
+  Token 50: ha                             →  lema: haber
+  Token 51: introducido                    →  lema: introducir
+  Token 52: un                             →  lema: uno
+  Token 53: cambio                         →  lema: cambio
+  Token 54: en                             →  lema: en
+  Token 55: el                             →  lema: el
+  Token 56: equipo                         →  lema: equipo
+
+  → Total de tokens: 56
+
+========================================================================
+  ETAPA 4: POS Tagging (Part-of-Speech)
+========================================================================
+  Token  1: Netflix                         POS: PROPN   (Nombre propio)
+  Token  2: ha                              POS: AUX     (Verbo auxiliar)
+  Token  3: encontrado                      POS: VERB    (Verbo)
+  Token  4: en                              POS: ADP     (Preposición / Postposición)
+  Token  5: el                              POS: DET     (Determinante)
+  Token  6: juego                           POS: NOUN    (Sustantivo)
+  Token  7: del                             POS: ADP     (Preposición / Postposición)
+  Token  8: calamar                         POS: VERB    (Verbo)
+  Token  9: su                              POS: DET     (Determinante)
+  Token 10: nuevo                           POS: ADJ     (Adjetivo)
+  Token 11: fenómeno                        POS: NOUN    (Sustantivo)
+  Token 12: mundial                         POS: ADJ     (Adjetivo)
+  Token 13: ni                              POS: CCONJ   (Conjunción coordinante)
+  Token 14: siquiera                        POS: NOUN    (Sustantivo)
+  Token 15: en                              POS: ADP     (Preposición / Postposición)
+  Token 16: la                              POS: DET     (Determinante)
+  Token 17: propia                          POS: DET     (Determinante)
+  Token 18: plataforma                      POS: NOUN    (Sustantivo)
+  Token 19: contaban                        POS: VERB    (Verbo)
+  Token 20: con                             POS: ADP     (Preposición / Postposición)
+  Token 21: ello                            POS: PRON    (Pronombre)
+  Token 22: como                            POS: SCONJ   (Conjunción subordinante)
+  Token 23: seguro                          POS: ADJ     (Adjetivo)
+  Token 24: que                             POS: SCONJ   (Conjunción subordinante)
+  Token 25: tampoco                         POS: ADV     (Adverbio)
+  Token 26: esperaban                       POS: VERB    (Verbo)
+  Token 27: recibir                         POS: VERB    (Verbo)
+  Token 28: multitud                        POS: NOUN    (Sustantivo)
+  Token 29: de                              POS: ADP     (Preposición / Postposición)
+  Token 30: quejas                          POS: NOUN    (Sustantivo)
+  Token 31: por                             POS: ADP     (Preposición / Postposición)
+  Token 32: una                             POS: DET     (Determinante)
+  Token 33: escena                          POS: NOUN    (Sustantivo)
+  Token 34: del                             POS: ADP     (Preposición / Postposición)
+  Token 35: cuarto                          POS: ADJ     (Adjetivo)
+  Token 36: episodio                        POS: NOUN    (Sustantivo)
+  Token 37: sin                             POS: ADP     (Preposición / Postposición)
+  Token 38: embargo                         POS: NOUN    (Sustantivo)
+  Token 39: han                             POS: AUX     (Verbo auxiliar)
+  Token 40: estado                          POS: AUX     (Verbo auxiliar)
+  Token 41: rápidos                         POS: ADJ     (Adjetivo)
+  Token 42: para                            POS: ADP     (Preposición / Postposición)
+  Token 43: responder                       POS: VERB    (Verbo)
+  Token 44: a                               POS: ADP     (Preposición / Postposición)
+  Token 45: la                              POS: DET     (Determinante)
+  Token 46: indignación                     POS: NOUN    (Sustantivo)
+  Token 47: del                             POS: ADP     (Preposición / Postposición)
+  Token 48: público                         POS: NOUN    (Sustantivo)
+  Token 49: y                               POS: CCONJ   (Conjunción coordinante)
+  Token 50: ha                              POS: AUX     (Verbo auxiliar)
+  Token 51: introducido                     POS: VERB    (Verbo)
+  Token 52: un                              POS: DET     (Determinante)
+  Token 53: cambio                          POS: NOUN    (Sustantivo)
+  Token 54: en                              POS: ADP     (Preposición / Postposición)
+  Token 55: el                              POS: DET     (Determinante)
+  Token 56: equipo                          POS: NOUN    (Sustantivo)
+
+  → Total de tokens: 56
+
+========================================================================
+  ETAPA 5: Quitar Stopwords (Stopword Removal)
+========================================================================
+  Token  1: Netflix                         POS: PROPN   (Nombre propio)
+  Token  3: encontrado                      POS: VERB    (Verbo)
+  Token  6: juego                           POS: NOUN    (Sustantivo)
+  Token  8: calamar                         POS: VERB    (Verbo)
+  Token 11: fenómeno                        POS: NOUN    (Sustantivo)
+  Token 12: mundial                         POS: ADJ     (Adjetivo)
+  Token 14: siquiera                        POS: NOUN    (Sustantivo)
+  Token 18: plataforma                      POS: NOUN    (Sustantivo)
+  Token 19: contaban                        POS: VERB    (Verbo)
+  Token 23: seguro                          POS: ADJ     (Adjetivo)
+  Token 26: esperaban                       POS: VERB    (Verbo)
+  Token 27: recibir                         POS: VERB    (Verbo)
+  Token 28: multitud                        POS: NOUN    (Sustantivo)
+  Token 30: quejas                          POS: NOUN    (Sustantivo)
+  Token 33: escena                          POS: NOUN    (Sustantivo)
+  Token 35: cuarto                          POS: ADJ     (Adjetivo)
+  Token 36: episodio                        POS: NOUN    (Sustantivo)
+  Token 41: rápidos                         POS: ADJ     (Adjetivo)
+  Token 43: responder                       POS: VERB    (Verbo)
+  Token 46: indignación                     POS: NOUN    (Sustantivo)
+  Token 48: público                         POS: NOUN    (Sustantivo)
+  Token 51: introducido                     POS: VERB    (Verbo)
+  Token 53: cambio                          POS: NOUN    (Sustantivo)
+  Token 56: equipo                          POS: NOUN    (Sustantivo)
+
+  → Total de tokens: 56
+
+========================================================================
+  Pipeline completado exitosamente.
+========================================================================
